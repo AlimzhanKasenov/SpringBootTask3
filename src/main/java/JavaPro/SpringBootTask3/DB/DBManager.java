@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class DBManager {
     private static ArrayList<Task> arrayList = new ArrayList<>();
-    private Long id = 6L;
+    private static Long id = 6L;
     static {
         arrayList.add(new Task(1L, "Задача первая чёто нужно сделать", "Description1",
                 "23.10.2020", false));
@@ -54,5 +54,11 @@ public class DBManager {
             }
             i++;
         }
+    }
+
+    public static void addTask(Task task){
+        task.setId(id);
+        arrayList.add(task);
+        id++;
     }
 }

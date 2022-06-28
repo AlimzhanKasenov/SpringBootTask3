@@ -24,7 +24,7 @@ public class servletsMain {
     @GetMapping(value = "/details/{taskId}")
     public String details(@PathVariable(name="taskId") Long id, Model model){
         Task task = DBManager.getTask(id);
-        model.addAttribute("DetailsTask", task);
+        model.addAttribute("one_task", task);
         return "detailsPage";
     }
 
@@ -52,5 +52,28 @@ public class servletsMain {
         DBManager.saveTask(id, task);
 
         return "redirect:/";
+    }
+
+    @PostMapping(value = "/add_task")
+    public String addTask (@RequestParam(name = "task_name") String name,
+                           @RequestParam(name = "task_description") String description,
+                           @RequestParam(name = "task_deadline_date") String deadline_date){
+
+        Task task = new Task();
+        boolean completed = false;
+
+        task.setName(name);
+        task.setDescription(description);
+        task.setDeadlineDate(deadline_date);
+        task.setCompleted(completed);
+
+        DBManager.addTask(task);
+
+        return "redirect:/";
+    }
+
+    @GetMapping(value = "/addTask")
+    public String getAddTask(){
+        return "addTask";
     }
 }

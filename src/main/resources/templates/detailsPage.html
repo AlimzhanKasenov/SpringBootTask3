@@ -1,40 +1,74 @@
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/MainLayout.html"
-      xmlns="http://www.w3.org/1999/html">
+<html lang="rus" xmlns:th = "http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="layout/MainLayout.html">
 
-<div layout:fragment="maincontent">
-    <div th:if="${DetailsTask != null}">
-        <div class="mb-3 w-50 mx-auto">
-            <form th:action="@{'/save_task'}" method="post">
-                <input type="hidden" name="task_id" th:value="${DetailsTask.getId()}">
-                <div class="mt-3">
-                    <label for="formGroupExampleInput" class="form-label">Task Name</label>
-                    <input type="text" class="form-control" id="formGroupExampleInput" th:value="${DetailsTask.name}">
-                </div>
-
-                <div class="mt-3">
-                    <label class="form-label" >Task Description</label><br>
-                    <textarea type="text" class="form-control" name="task_description"
-                              th:text="${DetailsTask.description}"></textarea>
-                </div>
-                <div class="mt-3">
-                    <label class="form-label">Task Deadline Date</label><br>
-                    <input class="form-control w-100" type="date" th:value="${DetailsTask.getDeadlineDate()}"
-                           data-date-format="mm.dd.yyyy">
-                </div>
-                <select class="form-select mt-3" name="task_completed">
-                    <option th:value="${'true'}" th:selected="${DetailsTask.isCompleted()}" th:text="${'YES'}"></option>
-                    <option th:value="${'false'}" th:text="${'NO'}"></option>
-                </select>
-
-                <div class="col-12 mt-3">
-                    <button type="button" class="btn btn-danger"
-                            data-bs-toggle="modal" data-bs-target="#deleteModal">DELETE</button>
-                    <button class="btn btn-success ms-2">SAVE TASK</button>
-                </div>
-            </form>
+<div layout:fragment = "maincontent">
+    <div th:if = "${one_task != null}">
+        <div class="row">
+            <div class="col-8 mx-auto">
+                <form th:action="@{'/save_task'}" method="post">
+                    <input type="hidden" name="task_id" th:value="${one_task.getId()}">
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <label>TASK NAME:</label>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <input type="text" class="form-control" name="task_name"
+                                   th:value="${one_task.getName()}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <label>TASK DESCRIPTION:</label>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                                <textarea type="text" class="form-control" name="task_description"
+                                          th:text="${one_task.getDescription()}"></textarea>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <label>TASK DEADLINE DATE:</label>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <input type="date" class="form-control" name="task_deadline_date"
+                                   th:value="${one_task.getDeadlineDate()}">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <label>COMPLETED:</label>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <select class="form-select" name="task_completed">
+                                <option th:value="${'false'}" th:selected="${one_task.isCompleted()}"
+                                        th:text="${'NO'}">
+                                </option>
+                                <option th:value="${'true'}" th:selected="${one_task.isCompleted()}"
+                                        th:text="${'YES'}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <button type="button" class="btn btn-danger"
+                                    data-bs-toggle="modal" data-bs-target="#deleteModal">DELETE</button>
+                            <button class="btn btn-success ms-2">SAVE TASK</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
+    <!-- Modal DELETE -->
     <div class="modal fade" id="deleteModal" data-bs-backdrop="static" data-bs-keyboard="false"
          tabindex="-1" aria-hidden="true">
         <div class="modal-dialog">
@@ -44,7 +78,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form th:action="@{'/delete_task'}" method="post">
-                    <input type="hidden" name="task_id" th:value="${DetailsTask.getId()}">
+                    <input type="hidden" name="task_id" th:value="${one_task.getId()}">
                     <div class="modal-body">
                         <h5 class="text-center">
                             Are you sure?
