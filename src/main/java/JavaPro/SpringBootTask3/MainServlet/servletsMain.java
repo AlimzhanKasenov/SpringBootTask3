@@ -5,6 +5,9 @@ import JavaPro.SpringBootTask3.Model.Task;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.ArrayList;
 
@@ -16,5 +19,38 @@ public class servletsMain {
         ArrayList<Task> arr = DBManager.getAllTask();
         model.addAttribute("task", arr);
         return "indexPage";
+    }
+
+    @GetMapping(value = "/details/{taskId}")
+    public String details(@PathVariable(name="taskId") Long id, Model model){
+        Task task = DBManager.getTask(id);
+        model.addAttribute("DetailsTask", task);
+        return "detailsPage";
+    }
+
+    @PostMapping(value = "/delete_task")
+    public String deleteTask(@RequestParam(name = "task_id") Long id){
+        System.out.println(id + "Чёто да чёто ");
+        DBManager.deleteTask(id);
+        return "redirect:/";
+    }
+
+    @PostMapping(value = "/save_task")
+    public String saveTask (@RequestParam(name = "task_id") Long id,
+                            @RequestParam(name = "task_name") String name,
+                            @RequestParam(name = "task_description") String description,
+                            @RequestParam(name = "task_deadline_date") String deadline_date,
+                            @RequestParam(name = "task_completed") boolean completed){
+
+        Task task = new Task();
+        task.setId(id);
+        task.setName(name);
+        task.setDescription(description);
+        task.setDeadlineDate(deadline_date);
+        task.setCompleted(completed);
+
+        DBManager.saveTask(id, task);
+
+        return "redirect:/";
     }
 }
